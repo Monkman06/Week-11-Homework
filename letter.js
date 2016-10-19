@@ -1,6 +1,6 @@
 function Letters() {
-  this.checkLetz = function(letter) {     //Checks to make sure the user input is a letter a-z
-    var letz = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+  this.checkLetters = function(letter) {     //Checks to make sure the user input is a letter a-z
+    var lettter = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
       'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' '];
     for(var i = 0; i < letz.length; i++) {
       if(letter == letz[i]) {

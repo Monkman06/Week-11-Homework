@@ -5,14 +5,14 @@ var letterCheck = require('./letter.js');
 
 var letterObj = letterCheck.letter.letterFunctions;	
 
-var currentWord, blankz, turns, lettersTried;
+var currentWord, blanks, turns, lettersTried;
 
 function blankSet() {
 	currentWord = game.game.wordBank[Math.floor(Math.random()*game.game.wordBank.length)];
-	blankz = "";
+	blanks = "";
 
 	for(var i = 0; i < currentWord.length; i++) {
-		blankz += '_ ';
+		blanks += '_ ';
 	}
 
 	lettersTried = [];
@@ -20,7 +20,7 @@ function blankSet() {
 }
 
 function userGuess() {
-	console.log(blankz);
+	console.log(blanks);
 
 	inquirer.prompt([
 		{
@@ -36,7 +36,7 @@ function userGuess() {
 		if(isLetter) {
 			for(var i = 0; i < currentWord.length; i++) {
 				if(userGuessLetter == currentWord[i]) {
-					blankz = letterObj.replaceLetter(blankz, i * 2, userGuessLetter);
+					blanks = letterObj.replaceLetter(blanks, i * 2, userGuessLetter);
 					inWord = true;
 				}
 			}
@@ -50,7 +50,7 @@ function userGuess() {
 			console.log("Your guesses have been: " + lettersTried);
 			console.log("");
 
-			if(blankz.indexOf("_") === -1) {
+			if(blanks.indexOf("_") === -1) {
 				console.log("Winner!");
 				console.log("The answer is " + currentWord + "!");
 				playAgain();

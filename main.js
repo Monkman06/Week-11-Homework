@@ -1,65 +1,93 @@
-//main.js is where the game is played and contains all of the user-input.
+var inquirer = require('inquirer');
+var words = require('./word.js');
+var game = require('./game.js');
+var letterCheck = require('./letter.js');
 
-//var inquirer = require('inquirer'); prompt worked better for this assignment. 
-var Game = require('./game.js');
-var prompt = require('prompt');
-var Word = require('./word.js');
+var letterObj = letterCheck.letter.letterFunctions;	
 
-prompt.start();
+var currentWord, blankz, turns, lettersTried;
 
-game = {
-	wordBank: [],
-	wordsMatched: 0,
-	guessesRemained: 10, 
-	currentWord: null, 
-	startGame: function(word){
-		this.resetGuessesRemained();
-		this.currentWord = new Word.Word(Game.Game.wordBank[Math.floor(Math.random()* Game.Game.wordBank.length)]);
-		this.currentWord = getLetters(); 
-		this.currentWord = renderWord();
-		this.rePrompt();
-	},
+function blankSet() {
+	currentWord = game.game.wordBank[Math.floor(Math.random()*game.game.wordBank.length)];
+	blankz = "";
 
-	resetGuessesRemained: function(){
-		this.guessesRemained = 10;
-	},
+	for(var i = 0; i < currentWord.length; i++) {
+		blankz += '_ ';
+	}
 
-	rePrompt: function(){
-		var self = this;
+	lettersTried = [];
+	turns = 10;
+}
 
-		prompt.get(['guessLetter'], function(err, result){
-			console.log('Your guess is:' + result.guessLetter);
+function userGuess() {
+	console.log(blankz);
 
-			var numberOfGuess = self.currentWord.checkLetter(result.guessLetter);
+	inquirer.prompt([
+		{
+			type: "input",
+			message: "Choose a Letter:",
+			name: "letter"
+		},
+	]).then(function (user) {
+		var userGuessLetter = user.letter.toLowerCase();
+		var isLetter = letterObj.checkLetz(userGuessLetter);
+		var inWord = false;
 
-			if(numberOfGuess == 0){
-				console.log('Wrong guess!');
-				self.guessesRemained--;
-			} else {
-				console.log('Correct guess!');
-				game.wordsMatched++;
-
-
-				if(self.currentWord.wordFound(game.wordsMatched)){
-					console.log('Good Job!');
-					return;
+		if(isLetter) {
+			for(var i = 0; i < currentWord.length; i++) {
+				if(userGuessLetter == currentWord[i]) {
+					blankz = letterObj.replaceLetter(blankz, i * 2, userGuessLetter);
+					inWord = true;
 				}
 			}
 
-			console.log('Guesses remaining:', self.guessesRemained);
-
-			if((self.guessesRemained > 0) && (self.currentWord.found == false)){
-				self.rePrompt();
-			} 
-			else if(self.guessesRemained == 0){
-				console.log('You lost! The correct word was:', (self.currentWord.word));
-			} else{
-				console.log(self.currentWord.renderWord());
-
+			if(!inWord && !letterObj.inArray(userGuessLetter, lettersTried)) {
+				lettersTried.push(userGuessLetter);
+				turns--;
 			}
-		});
-	}
-};
 
-game.startGame();
-	
+			console.log("You have " + turns + " tries left");
+			console.log("Your guesses have been: " + lettersTried);
+			console.log("");
+
+			if(blankz.indexOf("_") === -1) {
+				console.log("You won!");
+				console.log("The word was " + currentWord + "!");
+				playAgain();
+			} else if(turns == 0){
+				console.log("You ran out of turns!");
+				console.log("Game over bro it was " + currentWord);
+				playAgain();
+			} else {
+				userGuess();
+			}
+		} else {
+			console.log("That was not a letter or a space. Please enter a letter A-Z or a space.");
+			console.log("");
+			userGuess();
+		}
+
+	});
+}
+
+function playAgain() {
+	inquirer.prompt([
+	{
+		type: "confirm",
+		message: "Want to play again?",
+		name: "again"
+	},
+	]).then(function (user) {
+		if(user.again) {
+			console.log("");
+			blankSet();
+			userGuess();
+		} else {
+			console.log("Good Bye!");
+		}
+	});
+}
+
+
+blankSet();
+userGuess();

@@ -1,15 +1,16 @@
-var Letter = function(let) {
-	
-// property to store the actual letter	
-this.charec=let;
-// property/boolean if the letter can be shown 
-this.appear=false;
-	this.letterRender = function() {
-		//if appear is false then show the _
-		//else appear is true then show character
-    return!(this.appear)?"_":this.charec;
-	};
+//letter.js should control whether or not a letter appears as a "_" or as itself on-screen.
+
+var Letter = function(enterLetter) {
+  this.letterEntered = enterLetter; //this is where use will input so it is empty.
+  this.appear = false;
+  this.printLetter = function(){
+    if(this.appear === true){
+      return this.letterEntered;
+    } else{
+      return "_";
+    }
+  };
+
 };
 
-// export to use in word.js
-module.exports=Letter;
+exports.Letter = Letter;

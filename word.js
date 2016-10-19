@@ -1,52 +1,50 @@
-// require your letter objects
+//word.js should contain all of the methods which will check the letters guessed versus the random word selected.
 var Letter = require('./letter.js');
-var Word = function(wrd){
-// property to store the string wrd
-this.word=wrd;
-this.lets=[];
-this.found=false;
-// a collection of letter objects
-// property is the word found?
 
-	this.getLets = function() {
-// populate the collection above with new Letter objects
-for(var i=0; i<this.word.length; i++){
-	ths.lets.push(new Letters(this.word[i]));
-}
+
+var Word = function(word){
+	this.word = word;
+	this.lettersArray = [];
+	this.found = false;
+	this.getLetters = function(){
+		for(i=0; i < this.word.length; i++){
+			this.lettersArray.push(new Letter.Letter(this.word[i]));
+		}
 	};
-	
-	//found the current word
-	this.didWeFindTheWord = function() {
-		this.found=this.lets.every(function(curLet){
-      return curLet.appear;
-		//sets this.found in the word object to true or false if all letter objects have a true value in their appear property
-		});
 
+	this.wordFound = function(parameters){
+		if(parameters === this.lettersArray.length){
+			this.found = true;
+		}
 		return this.found;
 	};
 
-	this.checkIfLetterFound = function(guessLetter) {
-var whatToReturn=0;
-for(var i=0; i<this.lets.length; i++){
-// iterate through the collection of letter Objects
-if(this.lets[i].charac==guessLetter){
-	this.lets[i].appear=true;
-	whatToReturn++;
-}
-}
-// if guessLetter matches Letter property, the letter object should be shown
-		return whatToReturn;
-	};
+	this.checkLetter = function(userGuess){
+		var match = 0;
 
-	this.wordRender = function() {
-		var str='';
-		for(var i=0; i<this.lets.length; i++){
-			str +=this.lets[i].lettersRender();
+		for(i=0; i < this.lettersArray.length; i++){
+			if(userGuess === this.lettersArray[i].theLetterinWord){
+				this.lettersArray[i].appear = true;
+				console.log("You have a matching letter!");
+				match++
+			};
 		}
-// render the word based on if letters are found or ot found
-		return str;
+		return match;
+
+	};
+
+	this.renderWord = function(){
+		var string = "";
+
+		for (i = 0; i < this.lettersArray.length; i++) {
+			string += this.lettersArray[i].printLetter();
+		}
+		return string;
 	};
 }
 
-// export to use in main.js
-modules.export=main.js;
+exports.Word = Word; 	
+
+
+
+

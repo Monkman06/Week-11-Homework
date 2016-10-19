@@ -51,18 +51,18 @@ function userGuess() {
 			console.log("");
 
 			if(blankz.indexOf("_") === -1) {
-				console.log("You won!");
-				console.log("The word was " + currentWord + "!");
+				console.log("Winner!");
+				console.log("The answer is " + currentWord + "!");
 				playAgain();
 			} else if(turns == 0){
-				console.log("You ran out of turns!");
-				console.log("Game over bro it was " + currentWord);
+				console.log("GAME OVER");
+				console.log("The word was: " + currentWord);
 				playAgain();
 			} else {
 				userGuess();
 			}
 		} else {
-			console.log("That was not a letter or a space. Please enter a letter A-Z or a space.");
+			console.log("Incorrect input! Letters & spaces only!");
 			console.log("");
 			userGuess();
 		}
